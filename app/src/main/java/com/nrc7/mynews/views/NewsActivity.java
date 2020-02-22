@@ -49,7 +49,8 @@ public class NewsActivity extends AppCompatActivity implements NewsListener {
         newsRV.setLayoutManager(manager);
         newsRV.setHasFixedSize(true);
 
-        mArticles = getAllArticles();
+        mArticles = (List<Articles>) getIntent().getSerializableExtra("list");
+
         newsAdapter = new NewsAdapter(mArticles, this);
         newsRV.setAdapter(newsAdapter);
 
@@ -85,37 +86,5 @@ public class NewsActivity extends AppCompatActivity implements NewsListener {
         Intent intent = new Intent(this, NewsDetailsActivity.class);
         intent.putExtra("article", articles);
         startActivity(intent);
-
-    }
-
-
-    public List<Articles> getAllArticles(){
-
-        List<Articles> articlesList = new ArrayList<>();
-
-        try {
-            Wrapper wrapper = new AllArticlesSer().execute().get();
-            Articles[] response = wrapper.getArticles();
-            articlesList = Arrays.asList(response);
-
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-        return articlesList;
-    }
-
-    private static class AllArticlesSer extends GetAllArticles {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            Log.d("MRZUTIL", "onPreExecute()");
-        }
-
-        @Override
-        protected void onPostExecute(Wrapper wrapper) {
-            super.onPostExecute(wrapper);
-            Log.d("MRZUTIL", "onPostExecute(Wrapper wrapper)");
-        }
     }
 }

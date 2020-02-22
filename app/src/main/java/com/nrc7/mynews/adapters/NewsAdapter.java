@@ -83,8 +83,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     }
 
     public void update(int i) {
-        articles.get(i).setPublishedAt("piratas del caribe");
-        articles.get(i).setTitle("anonimo");
+
         notifyDataSetChanged();
     }
 
