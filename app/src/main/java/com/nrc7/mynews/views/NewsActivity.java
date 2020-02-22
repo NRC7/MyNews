@@ -1,5 +1,6 @@
 package com.nrc7.mynews.views;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -67,5 +68,12 @@ public class NewsActivity extends AppCompatActivity implements NewsListener {
     @Override
     public void clicked(int position) {
         Toast.makeText(this, String.valueOf(position), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void transporting(Book book) {
+        Intent intent = new Intent(this, NewsDetailsActivity.class);
+        intent.putExtra("book", book);
+        startActivity(intent);
     }
 }
