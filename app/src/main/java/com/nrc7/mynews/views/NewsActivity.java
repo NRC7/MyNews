@@ -51,7 +51,8 @@ public class NewsActivity extends AppCompatActivity implements NewsListener {
 
         mArticles = (List<Articles>) getIntent().getSerializableExtra("list");
 
-        newsAdapter = new NewsAdapter(mArticles, this);
+
+        ::newsAdapter = new NewsAdapter(mArticles, this);
         newsRV.setAdapter(newsAdapter);
 
         FloatingActionButton fab = findViewById(R.id.fab);
