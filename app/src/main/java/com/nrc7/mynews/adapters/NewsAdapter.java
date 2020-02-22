@@ -5,20 +5,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.nrc7.mynews.R;
 import com.nrc7.mynews.models.Article;
+import com.nrc7.mynews.views.Utilities;
 
 import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
-    // Replace with List of News Models
     private List<Article> articles;
-    // HandCraft Click Listener
+    // Adapter Click Listener
     private NewsListener listener;
 
     public NewsAdapter(List<Article> articles, NewsListener listener) {
@@ -29,12 +29,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (parent != null) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.list_item_news, parent, false);
             return new ViewHolder(view);
-        }
-        return null;
     }
 
     @Override
@@ -45,10 +42,10 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         holder.authorTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int z = holder.getAdapterPosition();
-                listener.clicked(z);
-                Article article = articles.get(z);
-                listener.transporting(article);
+                int index = holder.getAdapterPosition();
+                Article article = articles.get(index);
+                listener.toDetails(article);
+                update();
             }
         });
     }
@@ -58,32 +55,10 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         return articles.size();
     }
 
-    // HandCraft CRUD Functionality
-    public void addArticle(Article article) {
-        this.articles.add(article);
-        notifyDataSetChanged();
-    }
-
-    public void deleteArticle() {
-        if (articles.size() > 0) {
-            articles.remove(getItemCount() - 1);
-            notifyDataSetChanged();
-        }
-    }
-
-    public void cleanArticles() {
-        articles.clear();
-        notifyDataSetChanged();
-    }
-
-    public void resetArticles() {
-        articles.clear();
-        // articles = new Book().getAllBooks();
-        notifyDataSetChanged();
-    }
-
-    public void update(int i) {
-
+    // Update list temporal
+    public void update() {
+        articles = new Utilities().getAllArticles();
+        listener.update(articles);
         notifyDataSetChanged();
     }
 

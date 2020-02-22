@@ -12,6 +12,7 @@ import java.util.concurrent.ExecutionException;
 public class Utilities {
 
     public static final String SPLASH_LIST_KEY = "list";
+    public static final String DETAILS_KEY = "article";
 
     public List<Article> getAllArticles(){
 
