@@ -1,17 +1,19 @@
 package com.nrc7.mynews.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.nrc7.mynews.R;
 import com.nrc7.mynews.models.Article;
 import com.nrc7.mynews.views.Utilities;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -20,6 +22,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     private List<Article> articles;
     // Adapter Click Listener
     private NewsListener listener;
+    private Utilities utils;
 
     public NewsAdapter(List<Article> articles, NewsListener listener) {
         this.articles = articles;
@@ -36,16 +39,26 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        holder.nameTv.setText(articles.get(position).getPublishedAt());
-        holder.authorTv.setText(articles.get(position).getTitle());
 
-        holder.authorTv.setOnClickListener(new View.OnClickListener() {
+        String url = articles.get(position).getUrlToImage();
+        if (url == null) {
+            url = Utilities.DEFAULT_IMAGE_URL;
+        }
+        initImageItem(url, holder.imageView);
+
+        String[] date = articles.get(position).getPublishedAt().split("T");
+        holder.publishedAtTv.setText(date[0]);
+
+        holder.authorTv.setText(articles.get(position).getAuthor());
+
+        holder.titleTv.setText(articles.get(position).getTitle());
+
+        holder.titleTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int index = holder.getAdapterPosition();
                 Article article = articles.get(index);
                 listener.toDetails(article);
-                update();
             }
         });
     }
@@ -62,17 +75,28 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
+    public void initImageItem(String url, ImageView imageView) {
+        Picasso.get()
+                .load(url)
+                .into(imageView);
+    }
+
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView nameTv;
+        // author title urlToImage publishedAt
+        TextView publishedAtTv;
+        TextView titleTv;
         TextView authorTv;
-        LinearLayout card;
+        ImageView imageView;
+        CardView card;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            nameTv = itemView.findViewById(R.id.nameTv);
-            authorTv = itemView.findViewById(R.id.authorTv);
+            publishedAtTv = itemView.findViewById(R.id.publishedAtTv);
+            titleTv = itemView.findViewById(R.id.titleTv);
             card = itemView.findViewById(R.id.card);
+            imageView = itemView.findViewById(R.id.imageView);
+            authorTv = itemView.findViewById(R.id.authorTv);
         }
     }
 }

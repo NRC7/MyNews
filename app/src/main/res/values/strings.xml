@@ -3,4 +3,7 @@
     <string name="title_activity_news">NewsActivity</string>
     <string name="no_news_to_show">No News to show</string>
     <string name="no_data">no data</string>
+    <string name="publishedat">publishedAt</string>
+    <string name="title">title</string>
+    <string name="author">author</string>
 </resources>

@@ -1,9 +1,13 @@
 package com.nrc7.mynews.views;
 
 import android.util.Log;
+import android.widget.ImageView;
+
 import com.nrc7.mynews.models.Article;
 import com.nrc7.mynews.models.Wrapper;
 import com.nrc7.mynews.services.GetAllArticles;
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,6 +17,7 @@ public class Utilities {
 
     public static final String SPLASH_LIST_KEY = "list";
     public static final String DETAILS_KEY = "article";
+    public static final String DEFAULT_IMAGE_URL = "https://images.unsplash.com/photo-1476242906366-d8eb64c2f661?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1308&q=80";
 
     public List<Article> getAllArticles(){
 
@@ -27,6 +32,17 @@ public class Utilities {
             e.printStackTrace();
         }
         return articleList;
+    }
+
+    public void initLogo(ImageView imageView, String url) {
+        if (imageView != null && url != null) {
+            Picasso.get()
+                    .load(url)
+                    .into(imageView);
+            Log.d("NRC7", "initLogo: IMAGE OK");
+        } else {
+            Log.d("NRC7", "initLogo: IMAGE NULL");
+        }
     }
 
     private static class AllArticles extends GetAllArticles {
