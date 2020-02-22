@@ -47,8 +47,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
             public void onClick(View v) {
                 int z = holder.getAdapterPosition();
                 listener.clicked(z);
-                // Articles article = articles.get(z);
-                // listener.transporting(article);
+                Articles article = articles.get(z);
+                listener.transporting(article);
             }
         });
     }

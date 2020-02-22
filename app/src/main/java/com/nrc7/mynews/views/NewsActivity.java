@@ -1,5 +1,6 @@
 package com.nrc7.mynews.views;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -81,10 +82,12 @@ public class NewsActivity extends AppCompatActivity implements NewsListener {
 
     @Override
     public void transporting(Articles articles) {
-       /* Intent intent = new Intent(this, NewsDetailsActivity.class);
+        Intent intent = new Intent(this, NewsDetailsActivity.class);
         intent.putExtra("article", articles);
-        startActivity(intent); */
+        startActivity(intent);
+
     }
+
 
     public List<Articles> getAllArticles(){
 
