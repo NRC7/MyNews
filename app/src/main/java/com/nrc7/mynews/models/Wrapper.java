@@ -1,6 +1,8 @@
 package com.nrc7.mynews.models;
 
-public class Wrapper {
+import java.io.Serializable;
+
+public class Wrapper implements Serializable {
 
     private String status;
     private int totalResults;

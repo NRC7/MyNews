@@ -1,6 +1,5 @@
 package com.nrc7.mynews.views;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -11,6 +10,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,13 +18,21 @@ import android.widget.Toast;
 import com.nrc7.mynews.R;
 import com.nrc7.mynews.adapters.NewsAdapter;
 import com.nrc7.mynews.adapters.NewsListener;
-import com.nrc7.mynews.models.Book;
+import com.nrc7.mynews.models.Articles;
+import com.nrc7.mynews.models.Wrapper;
+import com.nrc7.mynews.services.GetAllArticles;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class NewsActivity extends AppCompatActivity implements NewsListener {
 
     private NewsAdapter newsAdapter;
     private RecyclerView newsRV;
     private TextView emptyListTV;
+    private List<Articles> mArticles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +48,8 @@ public class NewsActivity extends AppCompatActivity implements NewsListener {
         newsRV.setLayoutManager(manager);
         newsRV.setHasFixedSize(true);
 
-        newsAdapter = new NewsAdapter(new Book().getAllBooks(), this);
+        mArticles = getAllArticles();
+        newsAdapter = new NewsAdapter(mArticles, this);
         newsRV.setAdapter(newsAdapter);
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -50,8 +59,8 @@ public class NewsActivity extends AppCompatActivity implements NewsListener {
                 //newsAdapter.addBook(new Book("hermanos kamarasov", "dowtoyeski"));
                 //newsAdapter.deleteBook();
                 //newsAdapter.clean();
-                //newsAdapter.reset();
-                newsAdapter.update(newsAdapter.getItemCount() - 1);
+                //2newsAdapter.reset();
+                //newsAdapter.update(newsAdapter.getItemCount() - 1);
                 if (newsAdapter.getItemCount() > 0) {
                     newsRV.smoothScrollToPosition(newsAdapter.getItemCount() - 1);
                     Toast.makeText(NewsActivity.this, "Funcionó", Toast.LENGTH_SHORT).show();
@@ -71,9 +80,39 @@ public class NewsActivity extends AppCompatActivity implements NewsListener {
     }
 
     @Override
-    public void transporting(Book book) {
-        Intent intent = new Intent(this, NewsDetailsActivity.class);
-        intent.putExtra("book", book);
-        startActivity(intent);
+    public void transporting(Articles articles) {
+       /* Intent intent = new Intent(this, NewsDetailsActivity.class);
+        intent.putExtra("article", articles);
+        startActivity(intent); */
+    }
+
+    public List<Articles> getAllArticles(){
+
+        List<Articles> articlesList = new ArrayList<>();
+
+        try {
+            Wrapper wrapper = new AllArticlesSer().execute().get();
+            Articles[] response = wrapper.getArticles();
+            articlesList = Arrays.asList(response);
+
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return articlesList;
+    }
+
+    private static class AllArticlesSer extends GetAllArticles {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.d("MRZUTIL", "onPreExecute()");
+        }
+
+        @Override
+        protected void onPostExecute(Wrapper wrapper) {
+            super.onPostExecute(wrapper);
+            Log.d("MRZUTIL", "onPostExecute(Wrapper wrapper)");
+        }
     }
 }

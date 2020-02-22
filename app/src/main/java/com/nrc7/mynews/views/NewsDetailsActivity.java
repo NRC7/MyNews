@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.nrc7.mynews.R;
-import com.nrc7.mynews.models.Book;
+import com.nrc7.mynews.models.Articles;
 
 public class NewsDetailsActivity extends AppCompatActivity {
 
@@ -17,9 +17,9 @@ public class NewsDetailsActivity extends AppCompatActivity {
 
         TextView textView = findViewById(R.id.detailsNameTv);
 
-        Book detailsbook = (Book) getIntent().getSerializableExtra("book");
-        if (detailsbook.getAuthor() != null) {
-            textView.setText(detailsbook.getAuthor());
+        Articles detailsArticle = (Articles) getIntent().getSerializableExtra("article");
+        if (detailsArticle.getDescription() != null) {
+            textView.setText(detailsArticle.getDescription());
         }
     }
 }

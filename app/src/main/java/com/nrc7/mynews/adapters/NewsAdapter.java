@@ -10,19 +10,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.nrc7.mynews.R;
-import com.nrc7.mynews.models.Book;
+import com.nrc7.mynews.models.Articles;
 
 import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     // Replace with List of News Models
-    private List<Book> books;
+    private List<Articles> articles;
     // HandCraft Click Listener
     private NewsListener listener;
 
-    public NewsAdapter(List<Book> books, NewsListener listener) {
-        this.books = books;
+    public NewsAdapter(List<Articles> articles, NewsListener listener) {
+        this.articles = articles;
         this.listener = listener;
     }
 
@@ -39,53 +39,52 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        holder.nameTv.setText(books.get(position).getName());
-        holder.authorTv.setText(books.get(position).getAuthor());
+        holder.nameTv.setText(articles.get(position).getPublishedAt());
+        holder.authorTv.setText(articles.get(position).getTitle());
 
         holder.authorTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int z = holder.getAdapterPosition();
                 listener.clicked(z);
-                Book selectedBook = books.get(z);
-                listener.transporting(selectedBook);
+                // Articles article = articles.get(z);
+                // listener.transporting(article);
             }
         });
-
     }
 
     @Override
     public int getItemCount() {
-        return books.size();
+        return articles.size();
     }
 
     // HandCraft CRUD Functionality
-    public void addBook(Book book) {
-        books.add(book);
+    public void addArticle(Articles articles) {
+        this.articles.add(articles);
         notifyDataSetChanged();
     }
 
-    public void deleteBook() {
-        if (books.size() > 0) {
-            books.remove(getItemCount() - 1);
+    public void deleteArticle() {
+        if (articles.size() > 0) {
+            articles.remove(getItemCount() - 1);
             notifyDataSetChanged();
         }
     }
 
-    public void clean() {
-        books.clear();
+    public void cleanArticles() {
+        articles.clear();
         notifyDataSetChanged();
     }
 
-    public void reset() {
-        books.clear();
-        books = new Book().getAllBooks();
+    public void resetArticles() {
+        articles.clear();
+        // articles = new Book().getAllBooks();
         notifyDataSetChanged();
     }
 
     public void update(int i) {
-        books.get(i).setName("piratas del caribe");
-        books.get(i).setAuthor("anonimo");
+        articles.get(i).setPublishedAt("piratas del caribe");
+        articles.get(i).setTitle("anonimo");
         notifyDataSetChanged();
     }
 

@@ -1,6 +1,8 @@
 package com.nrc7.mynews.models;
 
-public class Articles {
+import java.io.Serializable;
+
+public class Articles implements Serializable {
     private Source source;
     private String author, title, description, url, urlToImage, publishedAt, content;
 
