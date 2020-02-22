@@ -13,7 +13,7 @@ public class Services {
 
     private static final String BASE_URL = "https://newsapi.org/v2/";
 
-    // Articles Service
+    // Article Service
     public NewsApi getAllArticles(){
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder()

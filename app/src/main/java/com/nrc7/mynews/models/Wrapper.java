@@ -6,7 +6,7 @@ public class Wrapper implements Serializable {
 
     private String status;
     private int totalResults;
-    private Articles[] articles;
+    private Article[] articles;
 
     public String getStatus() {
         return status;
@@ -16,7 +16,7 @@ public class Wrapper implements Serializable {
         return totalResults;
     }
 
-    public Articles[] getArticles() {
+    public Article[] getArticles() {
         return articles;
     }
 }

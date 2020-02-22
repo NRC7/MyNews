@@ -2,38 +2,28 @@ package com.nrc7.mynews.views;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.nrc7.mynews.R;
 import com.nrc7.mynews.adapters.NewsAdapter;
 import com.nrc7.mynews.adapters.NewsListener;
-import com.nrc7.mynews.models.Articles;
-import com.nrc7.mynews.models.Wrapper;
-import com.nrc7.mynews.services.GetAllArticles;
+import com.nrc7.mynews.models.Article;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class NewsActivity extends AppCompatActivity implements NewsListener {
 
     private NewsAdapter newsAdapter;
     private RecyclerView newsRV;
     private TextView emptyListTV;
-    private List<Articles> mArticles;
+    private List<Article> mArticles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +39,10 @@ public class NewsActivity extends AppCompatActivity implements NewsListener {
         newsRV.setLayoutManager(manager);
         newsRV.setHasFixedSize(true);
 
-        mArticles = (List<Articles>) getIntent().getSerializableExtra("list");
+        mArticles = (List<Article>) getIntent().getSerializableExtra("list");
 
 
-        ::newsAdapter = new NewsAdapter(mArticles, this);
+        newsAdapter = new NewsAdapter(mArticles, this);
         newsRV.setAdapter(newsAdapter);
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -83,9 +73,14 @@ public class NewsActivity extends AppCompatActivity implements NewsListener {
     }
 
     @Override
-    public void transporting(Articles articles) {
+    public void transporting(Article article) {
         Intent intent = new Intent(this, NewsDetailsActivity.class);
-        intent.putExtra("article", articles);
+        intent.putExtra("article", article);
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Temporal solution to prevent user from going back to SplashActivity
     }
 }

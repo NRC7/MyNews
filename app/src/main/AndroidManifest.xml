@@ -16,7 +16,7 @@
             android:name=".views.NewsActivity"
             android:label="@string/title_activity_news"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".views.MainActivity">
+        <activity android:name=".views.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

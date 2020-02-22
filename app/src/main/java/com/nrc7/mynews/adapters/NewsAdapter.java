@@ -10,18 +10,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.nrc7.mynews.R;
-import com.nrc7.mynews.models.Articles;
+import com.nrc7.mynews.models.Article;
 
 import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     // Replace with List of News Models
-    private List<Articles> articles;
+    private List<Article> articles;
     // HandCraft Click Listener
     private NewsListener listener;
 
-    public NewsAdapter(List<Articles> articles, NewsListener listener) {
+    public NewsAdapter(List<Article> articles, NewsListener listener) {
         this.articles = articles;
         this.listener = listener;
     }
@@ -47,7 +47,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
             public void onClick(View v) {
                 int z = holder.getAdapterPosition();
                 listener.clicked(z);
-                Articles article = articles.get(z);
+                Article article = articles.get(z);
                 listener.transporting(article);
             }
         });
@@ -59,8 +59,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     }
 
     // HandCraft CRUD Functionality
-    public void addArticle(Articles articles) {
-        this.articles.add(articles);
+    public void addArticle(Article article) {
+        this.articles.add(article);
         notifyDataSetChanged();
     }
 
