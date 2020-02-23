@@ -8,6 +8,7 @@ import com.nrc7.mynews.models.Wrapper;
 import com.nrc7.mynews.services.GetAllArticles;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,6 +44,11 @@ public class Utilities {
         } else {
             Log.d("NRC7", "initLogo: IMAGE NULL");
         }
+    }
+
+    public String getCurrentDate() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/YYYY");
+        return String.valueOf(simpleDateFormat.format(System.currentTimeMillis()));
     }
 
     private static class AllArticles extends GetAllArticles {
