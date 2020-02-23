@@ -1,25 +1,24 @@
 package com.nrc7.mynews.views;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.nrc7.mynews.R;
 import com.nrc7.mynews.models.Article;
-import com.nrc7.mynews.models.Wrapper;
-import com.nrc7.mynews.services.GetAllArticles;
+import com.nrc7.mynews.services.GetArticles;
+import com.nrc7.mynews.utils.Utilities;
+
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class SplashActivity extends AppCompatActivity {
 
-    List<Article> articles;
+    List<Article> articles = new ArrayList<>();
     int splashTimer = 1500;
 
     @Override
@@ -27,18 +26,19 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        if (articles == null || articles.size() < 1) {
-            articles = new Utilities().getAllArticles();
+        articles = new GetArticles().getArticleList();
+        if (articles.size() > 1) {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent = new Intent(getApplicationContext(), NewsActivity.class);
+                    intent.putExtra(Utilities.SPLASH_LIST_KEY, (Serializable) articles);
+                    startActivity(intent);
+                }
+            }, splashTimer);
+        } else {
+            Toast.makeText(this, "Intentalo Nuevamente", Toast.LENGTH_SHORT).show();
         }
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(getApplicationContext(), NewsActivity.class);
-                intent.putExtra(Utilities.SPLASH_LIST_KEY, (Serializable) articles);
-                startActivity(intent);
-            }
-        }, splashTimer);
     }
 }

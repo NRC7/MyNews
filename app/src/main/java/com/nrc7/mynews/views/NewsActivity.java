@@ -7,6 +7,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,6 +15,8 @@ import com.nrc7.mynews.R;
 import com.nrc7.mynews.adapters.NewsAdapter;
 import com.nrc7.mynews.adapters.NewsListener;
 import com.nrc7.mynews.models.Article;
+import com.nrc7.mynews.utils.Utilities;
+
 import java.util.List;
 
 public class NewsActivity extends AppCompatActivity implements NewsListener {
@@ -62,17 +65,17 @@ public class NewsActivity extends AppCompatActivity implements NewsListener {
     @Override
     public void toDetails(Article article) {
         Intent intent = new Intent(this, NewsDetailsActivity.class);
-        intent.putExtra(Utilities.DETAILS_KEY, article);
-        startActivity(intent);
-    }
-
-    @Override
-    public void update(List<Article> articles) {
-        mArticles = articles;
+        if (article != null) {
+            intent.putExtra(Utilities.DETAILS_KEY, article);
+            startActivity(intent);
+        } else {
+            Toast.makeText(getApplicationContext(), "Intentalo Nuevamente", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void onBackPressed() {
-        // Temporal solution to prevent user from going back to SplashActivity
+        newsAdapter.update();
+        Toast.makeText(this, "Obteniendo Más Noticias", Toast.LENGTH_SHORT).show();
     }
 }

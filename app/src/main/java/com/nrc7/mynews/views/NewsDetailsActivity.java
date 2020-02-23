@@ -1,53 +1,56 @@
 package com.nrc7.mynews.views;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nrc7.mynews.R;
 import com.nrc7.mynews.models.Article;
+import com.nrc7.mynews.utils.Utilities;
 import com.squareup.picasso.Picasso;
-
-import java.text.SimpleDateFormat;
 
 public class NewsDetailsActivity extends AppCompatActivity {
 
-    TextView publishedAtTv, authorTv, titleTv;
+    NestedScrollView detailsLayout;
+    TextView publishedAtTv, authorTv, titleTv, descriptionTv;
     ImageView detailsImageView;
     Utilities utilities;
+    private Article detailsArticle;
 
-    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_details);
 
         publishedAtTv = findViewById(R.id.detailsPublishedAtTv);
-        authorTv = findViewById(R.id.detailsAuthorTv);
         titleTv = findViewById(R.id.detailsTitleTv);
+        descriptionTv = findViewById(R.id.detailsDescriptionTv);
         detailsImageView = findViewById(R.id.detailsImageView);
+        authorTv = findViewById(R.id.detailsAuthorTv);
+        detailsLayout = findViewById(R.id.detailsLayout);
+
         utilities = new Utilities();
 
-        Article detailsArticle = (Article) getIntent().getSerializableExtra(Utilities.DETAILS_KEY);
+        detailsArticle = (Article) getIntent().getSerializableExtra(Utilities.DETAILS_KEY);
+
+        String url = detailsArticle.getUrlToImage();
+        if (url != null) {
+            Picasso.get().load(url).into(detailsImageView);
+        } else {
+            Picasso.get().load(Utilities.DEFAULT_IMAGE_URL).into(detailsImageView);
+        }
 
         String date = detailsArticle.getPublishedAt();
         if (date != null) {
-            //publishedAtTv.setText(date);
-            String currentDate = utilities.getCurrentDate();
-            publishedAtTv.setText(currentDate);
+            publishedAtTv.setText(date);
         } else {
             String currentDate = utilities.getCurrentDate();
             publishedAtTv.setText(currentDate);
-        }
-
-        String author = detailsArticle.getAuthor();
-        if (author != null) {
-            authorTv.setText(author);
-        } else {
-            authorTv.setText("to be confirmed");
         }
 
         String title = detailsArticle.getTitle();
@@ -57,11 +60,23 @@ public class NewsDetailsActivity extends AppCompatActivity {
             titleTv.setText("Go To Source");
         }
 
-        String url = detailsArticle.getUrlToImage();
-        if (url != null) {
-            Picasso.get().load(url).into(detailsImageView);
+        String body = detailsArticle.getDescription();
+        if (body != null) {
+            descriptionTv.setText(body);
         } else {
-            Picasso.get().load(Utilities.DEFAULT_IMAGE_URL).into(detailsImageView);
+            descriptionTv.setVisibility(View.INVISIBLE);
         }
+
+        String author = "By " + detailsArticle.getAuthor() + ", " + detailsArticle.getSource().getName();
+        authorTv.setText(author);
+
+        final String urlToSource = detailsArticle.getUrl();
+        detailsImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(utilities.goToSource(urlToSource));
+                Toast.makeText(NewsDetailsActivity.this, "To Source" , Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

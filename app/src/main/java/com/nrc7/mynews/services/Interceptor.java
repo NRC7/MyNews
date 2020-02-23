@@ -2,19 +2,17 @@ package com.nrc7.mynews.services;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Services {
+class Interceptor {
 
     private static final String BASE_URL = "https://newsapi.org/v2/";
 
-    // Article Service
-    public NewsApi getAllArticles(){
+    NewsApi getAllArticles(){
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
                 .connectTimeout(60, TimeUnit.SECONDS)
@@ -45,16 +43,12 @@ public class Services {
         OkHttpClient client = httpClient.build();
 
         Retrofit interceptor = new Retrofit.Builder()
-                //BASE_URL is imported from class when solving error using alt + intro
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();
 
-        //Interface Class for this GET
-        NewsApi request = interceptor.create(NewsApi.class);
-
-        return request;
-
+        //Interface Class for this GET request
+        return interceptor.create(NewsApi.class);
     }
 }
